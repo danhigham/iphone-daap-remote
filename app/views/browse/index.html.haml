@@ -1,0 +1,27 @@
+%ul.home{:title=>"Music", :selected=>"true"}
+  %li
+    %a{:href=>"#artists"} Artists
+  %li
+    %a{:href=>"#settings"} Settings
+    
+%ul#artists{:title=>"Artists"}
+  -@groups.each do |g|
+    %li.group= g
+    -@artists.collect { |x| x.name.grep(/^#{g}/)[0] }.compact.sort.each do |a|
+      %li
+        %a{:href => "\##{a.downcase.gsub(' ', '_')}"}= a
+        
+-@artists.each do |a|
+  %ul{:id=>a.name.downcase.gsub(' ', '_'), :title=>a.name}
+    -a.albums.each do |album|
+      %li
+        %a{:href => "\##{album.name.downcase.gsub(' ', '_')}"}= album.name
+
+-@artists.each do |a|
+  -a.albums.each do |album|    
+    %ul{:id=>album.name.downcase.gsub(' ', '_'), :title=>album.name}
+      -album.songs.each do |song|
+        %li
+          %a{:href => ""}= song.path
+
+
