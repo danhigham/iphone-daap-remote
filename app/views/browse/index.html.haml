@@ -18,10 +18,14 @@
         %a{:href => "\##{album.name.downcase.gsub(' ', '_')}"}= album.name
 
 -@artists.each do |a|
-  -a.albums.each do |album|    
+  -a.albums.each do |album|
+    -@songs = album.songs.sort_by{ |x| x.tracknum }
+    -@playlist = @songs.collect { |x| "#{x.id}|#{x.format}" }.join(',')   
     %ul{:id=>album.name.downcase.gsub(' ', '_'), :title=>album.name}
-      -album.songs.each do |song|
+      %li
+        %a{:href => "browse/play/#{@playlist}"} * All *
+      -@songs.each do |song|
         %li
-          %a{:href => ""}= song.path
+          %a{:href => "browse/play/#{song.id}|#{song.format}"}= "#{song.tracknum}. #{song.name}"
 
 
