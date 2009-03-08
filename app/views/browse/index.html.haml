@@ -19,7 +19,6 @@
 
 -@artists.each do |a|
   -a.albums.each do |album|
-    -debugger
     -@songs = album.songs.sort_by{ |x| x.tracknum || 0 }
     -@playlist = @songs.collect { |x| "#{x.id}|#{x.format}" }.join(',')   
     %ul{:id=>album.name.downcase.gsub(' ', '_'), :title=>album.name}

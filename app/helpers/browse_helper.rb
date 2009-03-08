@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'net/daap'
 require 'fileutils'
-require 'ruby-debug'
 
 module BrowseHelper
   def get_music_index
