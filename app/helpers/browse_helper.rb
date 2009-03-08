@@ -5,7 +5,7 @@ require 'ruby-debug'
 
 module BrowseHelper
   def get_music_index
-      daap = Net::DAAP::Client.new('localhost')
+      daap = Net::DAAP::Client.new('192.168.1.5')
 
       daap.connect do |dsn|        
         daap.databases.each do |db|
