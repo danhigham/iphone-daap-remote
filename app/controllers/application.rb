@@ -13,6 +13,6 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   
-
-  
 end
+
+$mplayer = Mplayer.new if $mplayer.nil?

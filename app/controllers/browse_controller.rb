@@ -1,9 +1,8 @@
 include BrowseHelper
 
 class BrowseController < ApplicationController
-  
   layout 'application', :except => :play
-  
+
   def index
     @artists = get_music_index
     @groups = @artists.collect { |x| x.name[/^./] }.uniq.sort
@@ -15,8 +14,13 @@ class BrowseController < ApplicationController
     playlist = params[:id].gsub('|', '.').split(',')
     out_playlist = playlist.collect { |x|  "#{stream_path}#{File::SEPARATOR}#{x}" }
     
+    $mplayer.playlist = out_playlist
+
     FileUtils::mkdir_p(stream_path)
     FileUtils.rm_r Dir.glob("#{stream_path}/*")
+
+    File.open("#{stream_path}#{File::SEPARATOR}playlist", "wb") { |file|
+      file.write out_playlist } 
       
     daap = Net::DAAP::Client.new('localhost')
 
@@ -30,14 +34,23 @@ class BrowseController < ApplicationController
 
       File.open(filename, "wb") { |file|
         daap.get_song(song_url) { |x|
+          #FileUtils::mkdir_p(path)
           file.write x
         } 
       }    
     
-      @@player.stop
-      @@player.playlist = out_playlist
-      #@@player.play
-    
+      pid = `ps a -o pid,comm | grep mplayer`.scan(/\d+/).to_s
+      #`kill -9 #{pid}` if !pid.empty?
+      #opts = ''
+      #@io = IO.popen "mplayer -noconsolecontrols -idle -slave #{opts} 2>&1", 'r+' if pid.empty?
+      
+      # Start playing playlist 
+      #cmd = "loadlist #{stream_path}#{File::SEPARATOR}playlist"
+      #@io.puts cmd
+      
+      $mplayer.play
+
+      
       if (playlist.length > 1)
         (1..playlist.length-1).each { |z|
           song = playlist[z]
@@ -55,5 +68,6 @@ class BrowseController < ApplicationController
       end 
     end
     
+    render :text => playlist.inspect
   end
 end

@@ -4,7 +4,7 @@ require 'fileutils'
 
 module BrowseHelper
   def get_music_index
-      daap = Net::DAAP::Client.new('192.168.1.5')
+      daap = Net::DAAP::Client.new('127.0.0.1')
 
       daap.connect do |dsn|        
         daap.databases.each do |db|
