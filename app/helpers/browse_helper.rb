@@ -1,10 +1,11 @@
 require 'rubygems'
 require 'net/daap'
 require 'fileutils'
+require 'ruby-debug'
 
 module BrowseHelper
   def get_music_index
-      daap = Net::DAAP::Client.new('127.0.0.1')
+      daap = Net::DAAP::Client.new($daap_server)
 
       daap.connect do |dsn|        
         daap.databases.each do |db|

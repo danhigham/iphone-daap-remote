@@ -16,3 +16,7 @@ ActiveSupport.use_standard_json_time_format = true
 # if you're including raw json in an HTML page.
 ActiveSupport.escape_html_entities_in_json = false
 
+$daap_server = '192.168.42.11'
+
+opts = ''
+$mplayer_io = IO.popen "mplayer -noconsolecontrols -idle -slave #{opts} 2>&1", 'r+'
