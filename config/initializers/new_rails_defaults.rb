@@ -16,7 +16,24 @@ ActiveSupport.use_standard_json_time_format = true
 # if you're including raw json in an HTML page.
 ActiveSupport.escape_html_entities_in_json = false
 
-$daap_server = '192.168.42.11'
+$daap_server = 'localhost'
 
 opts = ''
 $mplayer_io = IO.popen "mplayer -noconsolecontrols -idle -slave #{opts} 2>&1", 'r+'
+
+$mplayer_out = Hash.new
+
+Thread.new() {
+  loop do
+    $mplayer_io.each { |line|
+      if !line.scan(/\:/).empty?
+        k = line.split(/^([^:]+)\:/)[1].strip
+        v = line.split(/^([^:]+)\:/)[2].strip
+        $mplayer_out[k] = v
+       
+        RAILS_DEFAULT_LOGGER.info("Mplayer: #{k} :- #{v}") 
+      end            
+    }
+    sleep 0.1
+  end
+}

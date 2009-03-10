@@ -2,12 +2,13 @@
   %head
     %title DAAP Browser
     =javascript_include_tag "iui"
+    =javascript_include_tag "prototype"
     =stylesheet_link_tag "iui"
     %meta{:content=>"width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;", :name=>"viewport"}
   %body{:orient=>"portrait"}
     .toolbar
       %h1#pageTitle Music
       %a#backButton{:class=>"button", :href=>"#"} Music
-      %a.button{:href=>"#searchForm"} Search
+      %a.button{:href=>"/browse/nowplaying"} Now Playing
     =yield
     
